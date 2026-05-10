@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/chengli/free2/skills/repo-marketing-video/05-video.schema.json",
+  "title": "video.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "voiceover", "scenes"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "fps", "aspects", "duration"],
+      "properties": {
+        "title":    { "type": "string", "minLength": 1, "maxLength": 200 },
+        "fps":      { "type": "integer", "enum": [24, 30, 60] },
+        "aspects":  {
+          "type": "array",
+          "items": { "type": "string", "enum": ["16x9", "9x16", "1x1"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "duration": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "voiceover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tts", "voice"],
+      "properties": {
+        "tts":   { "const": "edge-tts" },
+        "voice": { "type": "string", "minLength": 1 }
+      }
+    },
+    "bgm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "baseVolume"],
+      "properties": {
+        "src":        { "type": "string", "minLength": 1 },
+        "baseVolume": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/scene" }
+    },
+    "_unresolved_assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "asset_hint"],
+        "properties": {
+          "scene_id":   { "type": "string" },
+          "asset_hint": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start", "duration", "component", "props", "voiceover", "captions"],
+      "properties": {
+        "id":        { "type": "string", "pattern": "^scene-\\d+$" },
+        "start":     { "type": "number", "minimum": 0 },
+        "duration":  { "type": "number", "minimum": 0.1 },
+        "component": {
+          "type": "string",
+          "enum": ["Hook", "Problem", "Solution", "Feature", "Demo", "Testimonial", "CTA", "Outro",
+                   "BigStatement", "PromptTyping", "ResultFlash", "StepTimeline", "ComparisonSplit", "AgentGraph",
+                   "ScreenCapture", "VideoClip"]
+        },
+        "props": {
+          "type": "object",
+          "required": ["headline"],
+          "properties": {
+            "headline":   { "type": "string", "minLength": 1 },
+            "subhead":    { "type": "string" },
+            "background": { "type": ["string", "null"] },
+            "generated":  { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "voiceover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["audio"],
+          "properties": {
+            "audio": { "type": "string", "pattern": "^videos/[^/]+/out/vo-scene-\\d+\\.wav$" }
+          }
+        },
+        "captions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["t", "text"],
+            "properties": {
+              "t":    { "type": "number", "minimum": 0 },
+              "text": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "captionStyle": {
+          "type": "string",
+          "enum": ["bold-bottom", "minimal-top", "karaoke", "none"]
+        },
+        "bgmIntensity": {
+          "type": "string",
+          "enum": ["silent", "low", "mid", "high"]
+        },
+        "transitionIn": {
+          "type": "string",
+          "enum": ["fade", "cut", "slide-left", "slide-up", "zoom"]
+        },
+        "transitionOut": {
+          "type": "string",
+          "enum": ["fade", "cut", "slide-left", "slide-up", "zoom"]
+        }
+      }
+    }
+  }
+}

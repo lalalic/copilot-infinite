@@ -1,0 +1,12 @@
+{
+  "name": "post-platforms-templates",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vendored from qili-media. Copy this folder + run `npm install` to get the runtime deps for the post-platforms skill.",
+  "main": "index.js",
+  "dependencies": {
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "chrome-launcher": "^1.2.1"
+  }
+}

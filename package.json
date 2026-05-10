@@ -1,0 +1,196 @@
+{
+  "name": "copilot-infinite",
+  "displayName": "Copilot Infinite",
+  "description": "Keeps the Copilot agent loop alive with Discord-backed report_to_discord and ask_questions_to_discord tools.",
+  "version": "1.4.0",
+  "icon": "icon.png",
+  "publisher": "local",
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguageModelTool:report_to_discord",
+    "onLanguageModelTool:ask_questions_to_discord"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilot-infinite.setDiscordBotToken",
+        "title": "Copilot Infinite: Set Discord Bot Token"
+      },
+      {
+        "command": "copilot-infinite.clearDiscordBotToken",
+        "title": "Copilot Infinite: Clear Discord Bot Token"
+      },
+      {
+        "command": "copilot-infinite.toggleDiscordEnabled",
+        "title": "Copilot Infinite: Toggle Discord Enabled"
+      },
+      {
+        "command": "copilot-infinite.answerPendingQuestion",
+        "title": "Copilot Infinite: Answer Pending Question"
+      }
+    ],
+    "configuration": {
+      "title": "Copilot Infinite",
+      "properties": {
+        "copilot-infinite.discord.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Enable Discord delivery for Copilot Infinite tools."
+        },
+        "copilot-infinite.discord.channelId": {
+          "type": "string",
+          "default": "",
+          "scope": "window",
+          "description": "Discord text channel ID used for report_to_discord and ask_questions_to_discord. Set in workspace settings to override the global value."
+        }
+      }
+    },
+    "chatSkills": [
+      { "path": "./.github/skills/agent-browser/SKILL.md" },
+      { "path": "./.github/skills/agent-customization/SKILL.md" },
+      { "path": "./.github/skills/audio-sourcing/SKILL.md" },
+      { "path": "./.github/skills/build-ai-app/SKILL.md" },
+      { "path": "./.github/skills/clarify-idea/SKILL.md" },
+      { "path": "./.github/skills/create-agent/SKILL.md" },
+      { "path": "./.github/skills/create-skill/SKILL.md" },
+      { "path": "./.github/skills/demo-video/SKILL.md" },
+      { "path": "./.github/skills/e2e-as-real-user/SKILL.md" },
+      { "path": "./.github/skills/feedback/SKILL.md" },
+      { "path": "./.github/skills/feedback-triager/SKILL.md" },
+      { "path": "./.github/skills/knowledge-lib/SKILL.md" },
+      { "path": "./.github/skills/post-monitor/SKILL.md" },
+      { "path": "./.github/skills/post-platforms/SKILL.md" },
+      { "path": "./.github/skills/remotion-engine/SKILL.md" },
+      { "path": "./.github/skills/repo-marketing/SKILL.md" },
+      { "path": "./.github/skills/user-stories/SKILL.md" }
+    ],
+    "chatInstructions": [
+      { "path": "./.github/instructions/spec-driven-dev.instructions.md" }
+    ],
+    "chatAgents": [
+      { "path": "./.github/agents/code-review.agent.md" },
+      { "path": "./.github/agents/explore.agent.md" },
+      { "path": "./.github/agents/marketing.agent.md" },
+      { "path": "./.github/agents/plan.agent.md" },
+      { "path": "./.github/agents/spec-driven-dev.agent.md" },
+      { "path": "./.github/agents/neverstop.agent.md" }
+    ],
+    "languageModelTools": [
+      {
+        "name": "report_to_discord",
+        "displayName": "Report to Discord",
+        "userDescription": "Report a status message or result to the configured Discord channel. Only use when Discord is enabled.",
+        "modelDescription": "Report a status/result to Discord. ONLY use this when the agent markdown says Discord is enabled. Use at natural checkpoints: task done, error, milestone. No-op when Discord is disabled or not configured.",
+        "canBeReferencedInPrompt": true,
+        "toolReferenceName": "report-to-discord",
+        "icon": "$(megaphone)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "the message to report to Discord"
+            }
+          },
+          "required": [
+            "message"
+          ]
+        }
+      },
+      {
+        "name": "ask_questions_to_discord",
+        "displayName": "Discord Ask",
+        "userDescription": "Ask the user questions via Discord. Only use when Discord is enabled. Falls back to local VS Code UI if Discord fails.",
+        "modelDescription": "Ask the user clarifying questions via Discord. ONLY use this when the agent markdown says Discord is enabled — for questions that need the user's attention on mobile. Falls back to local VS Code UI if Discord delivery fails. Provide questions array with concise headers and prompts. Use options for fixed choices, set multiSelect when multiple selections are allowed.",
+        "canBeReferencedInPrompt": true,
+        "toolReferenceName": "ask-questions-to-discord",
+        "icon": "$(question)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "questions": {
+              "type": "array",
+              "description": "Questions to ask the user.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "header": {
+                    "type": "string",
+                    "description": "Short identifier for the question."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "Question text shown to the user."
+                  },
+                  "multiSelect": {
+                    "type": "boolean",
+                    "description": "Whether multiple options can be selected."
+                  },
+                  "allowFreeformInput": {
+                    "type": "boolean",
+                    "description": "Whether freeform answers are allowed in addition to options."
+                  },
+                  "options": {
+                    "type": "array",
+                    "description": "Selectable answers for the question.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "description": "Display label and answer value for the option."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Optional secondary text shown with the option."
+                        },
+                        "recommended": {
+                          "type": "boolean",
+                          "description": "Marks the recommended option."
+                        }
+                      },
+                      "required": [
+                        "label"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "header",
+                  "question"
+                ]
+              }
+            }
+          },
+          "required": [
+            "questions"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "check": "tsc --noEmit -p ./",
+    "compile": "npm run check && node ./esbuild.mjs",
+    "watch": "node ./esbuild.mjs --watch",
+    "test": "node test/run.mjs",
+    "package": "npm run compile && vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.105.0",
+    "@vscode/vsce": "^3.6.2",
+    "esbuild": "^0.25.11",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,15 @@
+src/**
+tsconfig.json
+.tmp/**
+test/**
+Archive.zip
+esbuild.mjs
+package-lock.json
+**/*.map
+**/.DS_Store
+.env
+.env.*
+.github/hooks/.session-stopped
+skills/**/node_modules/**
+skills/**/.git/**
+skills/**/output/**
