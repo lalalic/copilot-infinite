@@ -5,7 +5,7 @@ description: Browser automation CLI that connects to the user's existing browser
 
 # Agent Browser Skill
 
-Browser automation via the user's existing browser using accessibility tree snapshots and ref-based element selection.
+Browser automation via the user's existing browser on cdp 64086 using accessibility tree snapshots and ref-based element selection.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ npm install -g agent-browser
 2. **Prefer existing tabs** — use `agent-browser tab list` and switch to an existing tab before opening new ones.
 3. **NEVER close the user's browser** — do not close tabs you didn't open.
 4. **If the browser can't connect** — ask the user to chrome://inspect/#remote-debugging to enable it.
-5. **Test CDP readiness** — run `agent-browser --auto-connect snapshot` first. If it fails, the browser isn't available.
+5. **Test CDP readiness** — run `agent-browser --auto-connect snapshot --cdp 64086` first. If it fails, the browser isn't available.
 
 ## Core Workflow
 
