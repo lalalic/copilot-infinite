@@ -6,3 +6,4 @@ Archive.zip
 .DS_Store
 .env
 .env.*
+.github/skills/**/project

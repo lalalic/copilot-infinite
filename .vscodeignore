@@ -13,3 +13,4 @@ package-lock.json
 skills/**/node_modules/**
 skills/**/.git/**
 skills/**/output/**
+.github/skills/**/project/**

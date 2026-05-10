@@ -2,7 +2,7 @@
   "name": "copilot-infinite",
   "displayName": "Copilot Infinite",
   "description": "Keeps the Copilot agent loop alive with Discord-backed report_to_discord and ask_questions_to_discord tools.",
-  "version": "1.5.1",
+  "version": "1.6.2",
   "icon": "icon.png",
   "publisher": "local",
   "license": "UNLICENSED",
@@ -55,34 +55,82 @@
       }
     },
     "chatSkills": [
-      { "path": "./.github/skills/agent-browser/SKILL.md" },
-      { "path": "./.github/skills/agent-customization/SKILL.md" },
-      { "path": "./.github/skills/audio-sourcing/SKILL.md" },
-      { "path": "./.github/skills/build-ai-app/SKILL.md" },
-      { "path": "./.github/skills/clarify-idea/SKILL.md" },
-      { "path": "./.github/skills/create-agent/SKILL.md" },
-      { "path": "./.github/skills/create-skill/SKILL.md" },
-      { "path": "./.github/skills/demo-video/SKILL.md" },
-      { "path": "./.github/skills/e2e-as-real-user/SKILL.md" },
-      { "path": "./.github/skills/feedback/SKILL.md" },
-      { "path": "./.github/skills/feedback-triager/SKILL.md" },
-      { "path": "./.github/skills/knowledge-lib/SKILL.md" },
-      { "path": "./.github/skills/post-monitor/SKILL.md" },
-      { "path": "./.github/skills/post-platforms/SKILL.md" },
-      { "path": "./.github/skills/remotion-engine/SKILL.md" },
-      { "path": "./.github/skills/repo-marketing/SKILL.md" },
-      { "path": "./.github/skills/user-stories/SKILL.md" }
+      {
+        "path": "./.github/skills/browser-harness/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/agent-customization/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/audio-sourcing/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/build-ai-app/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/clarify-idea/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/create-agent/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/create-skill/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/demo-video/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/e2e-as-real-user/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/feedback/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/feedback-triager/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/knowledge-lib/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/post-monitor/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/post-platforms/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/remotion-engine/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/repo-marketing/SKILL.md"
+      },
+      {
+        "path": "./.github/skills/user-stories/SKILL.md"
+      }
     ],
     "chatInstructions": [
-      { "path": "./.github/instructions/spec-driven-dev.instructions.md" }
+      {
+        "path": "./.github/instructions/spec-driven-dev.instructions.md"
+      }
     ],
     "chatAgents": [
-      { "path": "./.github/agents/code-review.agent.md" },
-      { "path": "./.github/agents/explore.agent.md" },
-      { "path": "./.github/agents/marketing.agent.md" },
-      { "path": "./.github/agents/plan.agent.md" },
-      { "path": "./.github/agents/spec-driven-dev.agent.md" },
-      { "path": "./.github/agents/neverstop.agent.md" }
+      {
+        "path": "./.github/agents/code-review.agent.md"
+      },
+      {
+        "path": "./.github/agents/explore.agent.md"
+      },
+      {
+        "path": "./.github/agents/marketing.agent.md"
+      },
+      {
+        "path": "./.github/agents/plan.agent.md"
+      },
+      {
+        "path": "./.github/agents/spec-driven-dev.agent.md"
+      },
+      {
+        "path": "./.github/agents/neverstop.agent.md"
+      }
     ],
     "languageModelTools": [
       {
