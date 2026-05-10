@@ -2,7 +2,7 @@
   "name": "copilot-infinite",
   "displayName": "Copilot Infinite",
   "description": "Keeps the Copilot agent loop alive with Discord-backed report_to_discord and ask_questions_to_discord tools.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "icon": "icon.png",
   "publisher": "local",
   "license": "UNLICENSED",
