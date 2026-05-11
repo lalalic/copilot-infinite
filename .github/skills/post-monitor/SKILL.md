@@ -66,6 +66,89 @@ Skip silently if not configured. Each backend gets its own
 `fetch_webpage`-or-`run_in_terminal`-driven section in the digest;
 do not invent numbers.
 
+### 2b. Platform stats (social media posts)
+
+Pull engagement metrics from social media platforms where the
+maintainer publishes content. The pipeline scripts live at
+`~/.browser-harness/pipelines/{platform}/stats.py`.
+
+**Auto-detect which platforms are available** by checking if the
+pipeline script files exist. Skip silently if a platform dir is
+missing.
+
+#### TikTok
+
+```sh
+python3 ~/.browser-harness/pipelines/tiktok/stats.py \
+  --url "<VIDEO_URL>"
+```
+
+Returns JSON: `video_id`, `author`, `description`, `views`, `likes`,
+`comments`, `shares`, `favorites`, `create_time`.
+
+Requires a known video URL — read from `.specs/monitoring/posts.json`
+(see config below).
+
+#### YouTube
+
+```sh
+python3 ~/.browser-harness/pipelines/youtube/stats.py \
+  --url "<VIDEO_URL>"
+```
+
+Returns JSON: `video_id`, `title`, `author`, `views`, `likes`,
+`comments`, `duration_seconds`, `publish_date`.
+
+#### XHS (Xiaohongshu)
+
+Two modes:
+
+```sh
+# Creator dashboard — own account overview (no URL needed)
+uv run --with playwright --with pycookiecheat \
+  python3 ~/.browser-harness/pipelines/xhs/stats.py
+
+# Specific note (requires xsec_token in URL)
+uv run --with playwright --with pycookiecheat \
+  python3 ~/.browser-harness/pipelines/xhs/stats.py \
+  --url "<NOTE_URL_WITH_XSEC_TOKEN>"
+```
+
+Returns JSON with likes, favorites, comments, shares, etc.
+Requires Chrome login to xiaohongshu.com.
+
+#### WeChat Channels (视频号)
+
+```sh
+python3 ~/.browser-harness/pipelines/wechat-channels/stats.py
+```
+
+Returns JSON: `post_list_summary`, `video_stats` (plays, likes,
+favorites, comments, shares, follows, period).
+Requires active WeChat Channels login in browser-harness.
+
+#### Platform config
+
+Maintain a list of tracked posts in `.specs/monitoring/posts.json`:
+
+```json
+{
+  "tiktok": [
+    {"url": "https://www.tiktok.com/@user/video/123", "label": "Campaign A"}
+  ],
+  "youtube": [
+    {"url": "https://www.youtube.com/watch?v=xyz", "label": "Launch video"}
+  ],
+  "xhs": [],
+  "wechat": true
+}
+```
+
+- If `posts.json` doesn't exist, skip platform stats silently.
+- For each entry, run the corresponding stats script, capture JSON.
+- `"wechat": true` means pull dashboard stats (no per-post URL).
+- `"xhs": []` (empty) means pull creator dashboard only.
+
 ### 3. Write the digest
 
 Append to `.specs/monitoring/<YYYY-MM-DD>.md`:
@@ -77,6 +160,7 @@ Append to `.specs/monitoring/<YYYY-MM-DD>.md`:
 - New issues: <total> (<n bug>, <n feature>, <n auto>, <n user>)
 - Auto-crashes vs previous window: <ratio> (<flag if spiking>)
 - Top error: `<signature>` × <n>
+- Platform reach: TikTok <views>V / YouTube <views>V / XHS <likes>♡ / WeChat <plays>▶
 
 ## Top 5 error signatures
 | # | Count | Signature                  | First seen | Latest issue |
@@ -95,6 +179,25 @@ Append to `.specs/monitoring/<YYYY-MM-DD>.md`:
 - DAU (7d): …
 - Crash-free %: …
 …
+
+## Platform Stats (if configured)
+### TikTok
+| Post | Views | Likes | Comments | Shares | Favorites |
+|------|-------|-------|----------|--------|-----------|
+| Campaign A | 11.1M | 532K | 4,409 | 74.6K | 71.1K |
+
+### YouTube
+| Post | Views | Likes | Comments |
+|------|-------|-------|----------|
+| Launch video | 1,234 | 56 | 12 |
+
+### XHS (Creator Dashboard)
+- Followers: … | Following: … | Likes+Favs: …
+- 7d: Exposure … | Views … | Likes … | Comments … | Shares …
+
+### WeChat Channels
+- Plays: … | Likes: … | Comments: … | Shares … | Follows: …
+- Period: MM-DD to MM-DD
 ```
 
 Maintain a running index at `.specs/monitoring/index.md` listing all
@@ -102,7 +205,8 @@ prior digests with the headline numbers.
 
 ### 4. Surface to maintainer
 
-- Print the **Quick read** + the **Top 5** as the chat reply.
+- Print the **Quick read** + the **Top 5** + **Platform Stats
+  summary** as the chat reply.
 - Link to the full file path.
 - If anything is **flagged** (spike, stale > 30 d, crash-free < 95 %)
   ask:
